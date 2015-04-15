@@ -13,39 +13,20 @@ import android.widget.ExpandableListView;
 /**
  * 
  * @author cesardiaz
- * @see <a
- *      href="https://stackoverflow.com/questions/29598154/arrayadapter-call-getview-five-time-for-each-row-and-produces-unexpected-behavio">ArrayAdapter
+ * @see <a href=
+ *      "https://stackoverflow.com/questions/29598154/arrayadapter-call-getview-five-time-for-each-row-and-produces-unexpected-behavio">ArrayAdapter
  *      call getView five time for each row and produces unexpected
  *      behaviour</a>
+ * @see <a href=
+ *      "http://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/"
+ *      >Android Expandable List View Tutorial</a >
  */
 public class MainActivity extends Activity {
-
-	// private Context context;
-	// private ListView lView;
-	// private ArrayAdapter<Team> aAdapterTeam;
-	// private List<Team> listTeam;
-	// private TextView tViewNoOfSelectionOnTop;
-
-	// private ArrayList<Player> aListPlayer;
-	// private ArrayAdapter<Player> aAdapterPlayers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		// context = MainActivity.this;
-		//
-		// tViewNoOfSelectionOnTop = (TextView)
-		// findViewById(R.id.tViewNoOfSelectionOnTop);
-		// lView = (ListView) findViewById(R.id.lView);
-		// listTeam = new ArrayList<Team>();
-		// loadData();
-		//
-		// aAdapterTeam = new TeamAdapter(context, 0, listTeam,
-		// tViewNoOfSelectionOnTop);
-		//
-		// lView.setAdapter(aAdapterTeam);
 
 		// get the listview
 		ExpandableListView expListView = (ExpandableListView) findViewById(R.id.exp_list);

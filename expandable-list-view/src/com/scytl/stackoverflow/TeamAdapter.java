@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.scytl.stackoverflow.model.Player;
@@ -16,7 +19,10 @@ import com.scytl.stackoverflow.model.Team;
 /**
  * 
  * @author cesardiaz
- *
+ * @see <a href=
+ *      "http://stackoverflow.com/questions/24832497/avoid-passing-null-as-the-view-root-need-to-resolve-layout-parameters-on-the-in"
+ *      >Avoid passing null as the view root (need to resolve layout parameters
+ *      on the inflated layout's root element)</a >
  */
 public class TeamAdapter extends BaseExpandableListAdapter {
 
@@ -33,8 +39,8 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		Object child = mData.get(groupPosition).getPlayers().get(childPosition);
-		Log.i(tag, String.format("Child in (%d, %d): %s", groupPosition,
-				childPosition, child));
+		// Log.i(tag, String.format("Child in (%d, %d): %s", groupPosition,
+		// childPosition, child));
 		return child;
 	}
 
@@ -44,18 +50,30 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getChildView(int groupPosition, int childPosition,
+	public View getChildView(final int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
-		final Player player = (Player) getChild(groupPosition, childPosition);
-
+		ChildHolder holder;
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.child, null);
+			convertView = inflater.inflate(R.layout.child, parent, false);
+
+			holder = new ChildHolder();
+			holder.name = (TextView) convertView.findViewById(R.id.player_name);
+			holder.checkBox = (CheckBox) convertView
+					.findViewById(R.id.check_box);
+			holder.checkBox
+					.setOnCheckedChangeListener(new PlayerCheckedChangeListener(
+							groupPosition, childPosition));
+
+			convertView.setTag(holder);
 		}
 
-		TextView name = (TextView) convertView.findViewById(R.id.player_name);
-		name.setText(player.getName());
+		holder = (ChildHolder) convertView.getTag();
+
+		final Player player = (Player) getChild(groupPosition, childPosition);
+		holder.name.setText(player.getName());
+		holder.checkBox.setSelected(player.isSelected());
 
 		return convertView;
 	}
@@ -68,7 +86,7 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getGroup(int groupPosition) {
 		Object group = mData.get(groupPosition);
-		Log.i(tag, String.format("Group in (%d): %s", groupPosition, group));
+		// Log.i(tag, String.format("Group in (%d): %s", groupPosition, group));
 		return group;
 	}
 
@@ -85,15 +103,24 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
-		Team team = (Team) getGroup(groupPosition);
+		GroupHolder holder;
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.parent, null);
+			convertView = inflater.inflate(R.layout.parent, parent, false);
+
+			holder = new GroupHolder();
+			holder.name = (TextView) convertView.findViewById(R.id.team_name);
+			holder.count = (TextView) convertView.findViewById(R.id.count);
+
+			convertView.setTag(holder);
 		}
 
-		TextView name = (TextView) convertView.findViewById(R.id.team_name);
-		name.setText(team.getName());
+		holder = (GroupHolder) convertView.getTag();
+
+		final Team team = (Team) getGroup(groupPosition);
+		holder.name.setText(team.getName());
+		holder.count.setText(team.getCount());
 
 		return convertView;
 	}
@@ -106,8 +133,47 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		Log.i(tag, String.format("Child selectable in (%d, %d)", groupPosition,
-				childPosition));
+		// Log.i(tag, String.format("Child selectable in (%d, %d)",
+		// groupPosition, childPosition));
 		return true;
+	}
+
+	static class GroupHolder {
+		TextView name;
+		TextView count;
+	}
+
+	static class ChildHolder {
+		TextView name;
+		CheckBox checkBox;
+	}
+
+	private final class PlayerCheckedChangeListener implements
+			OnCheckedChangeListener {
+
+		int groupPosition;
+		int childPosition;
+
+		PlayerCheckedChangeListener(int groupPosition, int childPosition) {
+			this.groupPosition = groupPosition;
+			this.childPosition = childPosition;
+		}
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			Team team = mData.get(groupPosition);
+			Player player = team.getPlayers().get(childPosition);
+			if (isChecked) {
+				team.increase();
+			} else {
+				team.decrease();
+			}
+			player.setSelected(isChecked);
+
+			Log.i(tag, String.format("Is checked %s %s %s >> %s", team, player,
+					isChecked, team.getCount()));
+		}
+
 	}
 }

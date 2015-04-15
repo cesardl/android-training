@@ -12,13 +12,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tViewNoOfSelectionFrmPatent"
+        android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="0" />
+        android:text="@string/zero"
+        android:textStyle="bold" />
 
 </RelativeLayout>
