@@ -5,21 +5,20 @@
     android:background="#f1fbf2"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:contentDescription="ROW_CHILD" >
+    android:padding="8dp" >
 
     <TextView
-        android:id="@+id/tViewPlayerName"
+        android:id="@+id/player_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:text="Player Name" />
+        android:layout_alignParentStart="true" />
 
-    <ImageView
-        android:id="@+id/iViewCheckUnCheck"
+    <CheckBox
+        android:id="@+id/check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:src="@android:drawable/checkbox_off_background" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

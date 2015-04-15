@@ -2,125 +2,112 @@ package com.scytl.stackoverflow;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-public class TeamAdapter extends ArrayAdapter<Team> {
+import com.scytl.stackoverflow.model.Player;
+import com.scytl.stackoverflow.model.Team;
 
-	private List<Team> listTeam;
-	private TextView tViewNoOfSelectionOnTop;
-	private int countSelectionOnTop = 0;
-	// private int pos = 0;
-	// private Team rowData = null;
-	private TextView tViewNoOfSelectionFrmPatent = null;
-	// private int rowCount = 0;
+/**
+ * 
+ * @author cesardiaz
+ *
+ */
+public class TeamAdapter extends BaseExpandableListAdapter {
 
-	static final String TAG = TeamAdapter.class.getSimpleName();
+	private static final String tag = TeamAdapter.class.getSimpleName();
 
-	public TeamAdapter(Context context, int resourceId, List<Team> teams,
-			TextView tViewNoOfSelection) {
-		super(context, resourceId, teams);
-		this.listTeam = teams;
-		this.tViewNoOfSelectionOnTop = tViewNoOfSelection;
-		Log.d(TAG, String.format("Total of values %d", teams.size()));
+	private Context mContext;
+	private List<Team> mData;
+
+	public TeamAdapter(Context context, List<Team> data) {
+		mContext = context;
+		mData = data;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// rowCount++;
+	public Object getChild(int groupPosition, int childPosition) {
+		Object child = mData.get(groupPosition).getPlayers().get(childPosition);
+		Log.i(tag, String.format("Child in (%d, %d): %s", groupPosition,
+				childPosition, child));
+		return child;
+	}
 
-		final int pos = position;
-		final Team rowData = listTeam.get(pos);
-		// pos = position;
-		// rowData = listTeam.get(pos);
-		// Log.d(TAG,"Row Count(Position): " + position + ", pos: " +
-		// pos
-		// + ", Row Count2: " + rowCount);
+	@Override
+	public long getChildId(int groupPosition, int childPosition) {
+		return childPosition;
+	}
 
-		Log.d(TAG, String.format(
-				"position %d - %s - %d - %s - %s",
-				position,
-				convertView == null ? "Is null " : convertView
-						.getContentDescription(), rowData.getType(), rowData
-						.getStrName(), parent));
+	@Override
+	public View getChildView(int groupPosition, int childPosition,
+			boolean isLastChild, View convertView, ViewGroup parent) {
+		final Player player = (Player) getChild(groupPosition, childPosition);
 
-		LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
-		if (rowData.getType() == Team.TYPE_Team) {
-			convertView = inflater.inflate(R.layout.parent, parent, false);
-		} else if (rowData.getType() == Team.TYPE_Player) {
-			convertView = inflater.inflate(R.layout.child, parent, false);
+		if (convertView == null) {
+			LayoutInflater inflater = (LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = inflater.inflate(R.layout.child, null);
 		}
 
-		if (rowData.getType() == Team.TYPE_Team) {
-			Log.d(TAG, "Type Team");
-			TextView tViewTeamName = (TextView) convertView
-					.findViewById(R.id.tViewTeamName);
-			TextView tViewNoOfSelectionFrmPatent = (TextView) convertView
-					.findViewById(R.id.tViewNoOfSelectionFrmPatent);
-
-			tViewTeamName.setText(rowData.getStrName());
-			rowData.settViewNoOfSelectionFrmPatent(tViewNoOfSelectionFrmPatent);
-			convertView.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					rowData.toggleExpansion(TeamAdapter.this, pos);
-				}
-			});
-
-		} else if (rowData.getType() == Team.TYPE_Player) {
-			Log.d(TAG, "Type Player");
-			final ImageView iViewCheckUnCheck = (ImageView) convertView
-					.findViewById(R.id.iViewCheckUnCheck);
-			TextView tViewPlayerName = (TextView) convertView
-					.findViewById(R.id.tViewPlayerName);
-			tViewNoOfSelectionFrmPatent = rowData.getParent()
-					.gettViewNoOfSelectionFrmPatent();
-			Log.d(TAG, "TextView2 Id: " + tViewNoOfSelectionFrmPatent.getId());
-			tViewPlayerName.setText(rowData.getStrName());
-
-			if (rowData.isSelected())
-				iViewCheckUnCheck
-						.setImageResource(android.R.drawable.checkbox_on_background);
-			else
-				iViewCheckUnCheck
-						.setImageResource(android.R.drawable.checkbox_off_background);
-
-			convertView.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Log.d(TAG, "Player Clicked");
-					rowData.toggleSelection();
-					int a = Integer.valueOf(tViewNoOfSelectionFrmPatent
-							.getText().toString());
-					if (rowData.isSelected()) {
-						Log.d(TAG, "Player Selected");
-						a++;
-						countSelectionOnTop++;
-						iViewCheckUnCheck
-								.setImageResource(android.R.drawable.checkbox_on_background);
-					} else {
-						Log.d(TAG, "Player Unselected");
-						a--;
-						countSelectionOnTop--;
-						iViewCheckUnCheck
-								.setImageResource(android.R.drawable.checkbox_off_background);
-					}
-					tViewNoOfSelectionOnTop.setText(String
-							.valueOf(countSelectionOnTop));
-					tViewNoOfSelectionFrmPatent.setText(String.valueOf(a));
-				}
-			});
-		}
+		TextView name = (TextView) convertView.findViewById(R.id.player_name);
+		name.setText(player.getName());
 
 		return convertView;
+	}
+
+	@Override
+	public int getChildrenCount(int groupPosition) {
+		return mData.get(groupPosition).getPlayers().size();
+	}
+
+	@Override
+	public Object getGroup(int groupPosition) {
+		Object group = mData.get(groupPosition);
+		Log.i(tag, String.format("Group in (%d): %s", groupPosition, group));
+		return group;
+	}
+
+	@Override
+	public int getGroupCount() {
+		return mData.size();
+	}
+
+	@Override
+	public long getGroupId(int groupPosition) {
+		return groupPosition;
+	}
+
+	@Override
+	public View getGroupView(int groupPosition, boolean isExpanded,
+			View convertView, ViewGroup parent) {
+		Team team = (Team) getGroup(groupPosition);
+		if (convertView == null) {
+			LayoutInflater inflater = (LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = inflater.inflate(R.layout.parent, null);
+		}
+
+		TextView name = (TextView) convertView.findViewById(R.id.team_name);
+		name.setText(team.getName());
+
+		return convertView;
+	}
+
+	@Override
+	public boolean hasStableIds() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		Log.i(tag, String.format("Child selectable in (%d, %d)", groupPosition,
+				childPosition));
+		return true;
 	}
 }

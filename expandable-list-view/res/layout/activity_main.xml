@@ -30,11 +30,10 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lView"
+    <ExpandableListView
+        android:id="@+id/exp_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lLayout" >
-    </ListView>
+        android:layout_height="match_parent"
+        android:layout_below="@id/lLayout" />
 
 </RelativeLayout>
