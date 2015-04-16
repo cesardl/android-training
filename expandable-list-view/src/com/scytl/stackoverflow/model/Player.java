@@ -8,7 +8,7 @@ package com.scytl.stackoverflow.model;
 public class Player {
 
 	private String name;
-	private boolean selected;
+	private boolean checked;
 
 	public Player(String name) {
 		this.name = name;
@@ -18,12 +18,12 @@ public class Player {
 		return name;
 	}
 
-	public boolean isSelected() {
-		return selected;
+	public boolean isChecked() {
+		return checked;
 	}
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
 	@Override

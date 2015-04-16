@@ -30,3 +30,7 @@ proguard/
 .settings/
 .project
 .classpath
+
+# IntelliJ IDEA
+.idea/
+*.iml

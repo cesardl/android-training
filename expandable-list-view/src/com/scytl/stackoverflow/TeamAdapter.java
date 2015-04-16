@@ -6,11 +6,10 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.scytl.stackoverflow.model.Player;
@@ -62,9 +61,6 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 			holder.name = (TextView) convertView.findViewById(R.id.player_name);
 			holder.checkBox = (CheckBox) convertView
 					.findViewById(R.id.check_box);
-			holder.checkBox
-					.setOnCheckedChangeListener(new PlayerCheckedChangeListener(
-							groupPosition, childPosition));
 
 			convertView.setTag(holder);
 		}
@@ -73,8 +69,13 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 
 		final Player player = (Player) getChild(groupPosition, childPosition);
 		holder.name.setText(player.getName());
-		holder.checkBox.setSelected(player.isSelected());
-
+		holder.checkBox.setChecked(player.isChecked());
+		Log.i(tag, String.format("Create listener for(%d, %d) >> %s",
+				groupPosition, childPosition, player.isChecked()));
+		holder.checkBox.setOnClickListener(new PlayerCheckedChangeListener(
+				groupPosition, childPosition));
+		// Log.i(tag, String.format("Selected for(%d, %d) %s", groupPosition,
+		// childPosition, player.isSelected()));
 		return convertView;
 	}
 
@@ -121,7 +122,7 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 		final Team team = (Team) getGroup(groupPosition);
 		holder.name.setText(team.getName());
 		holder.count.setText(team.getCount());
-
+		// Log.i(tag, String.format("Get count %s", team.getCount()));
 		return convertView;
 	}
 
@@ -148,8 +149,7 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 		CheckBox checkBox;
 	}
 
-	private final class PlayerCheckedChangeListener implements
-			OnCheckedChangeListener {
+	private final class PlayerCheckedChangeListener implements OnClickListener {
 
 		int groupPosition;
 		int childPosition;
@@ -160,19 +160,25 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 		}
 
 		@Override
-		public void onCheckedChanged(CompoundButton buttonView,
-				boolean isChecked) {
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
 			Team team = mData.get(groupPosition);
 			Player player = team.getPlayers().get(childPosition);
+			CheckBox buttonView = (CheckBox) v;
+			
+			boolean isChecked = buttonView.isChecked();
+			
 			if (isChecked) {
 				team.increase();
 			} else {
 				team.decrease();
 			}
-			player.setSelected(isChecked);
+			player.setChecked(isChecked);
 
-			Log.i(tag, String.format("Is checked %s %s %s >> %s", team, player,
-					isChecked, team.getCount()));
+			Log.w(tag, String.format("Is checked %s %s %s >> %s, %d", team,
+					player, isChecked, team.getCount(), buttonView.getId()));
+			
+			notifyDataSetChanged();
 		}
 
 	}
