@@ -3,12 +3,12 @@ package com.scytl.stackoverflow;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.scytl.stackoverflow.model.Player;
-import com.scytl.stackoverflow.model.Team;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ExpandableListView;
+
+import com.scytl.stackoverflow.model.Player;
+import com.scytl.stackoverflow.model.Team;
 
 /**
  * 
@@ -22,6 +22,8 @@ import android.widget.ExpandableListView;
  *      >Android Expandable List View Tutorial</a >
  */
 public class MainActivity extends Activity {
+
+	static final String tag = MainActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

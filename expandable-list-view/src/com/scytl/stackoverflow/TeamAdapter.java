@@ -25,7 +25,7 @@ import com.scytl.stackoverflow.model.Team;
  */
 public class TeamAdapter extends BaseExpandableListAdapter {
 
-	private static final String tag = TeamAdapter.class.getSimpleName();
+	static final String tag = TeamAdapter.class.getSimpleName();
 
 	private Context mContext;
 	private List<Team> mData;
@@ -61,6 +61,7 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 			holder.name = (TextView) convertView.findViewById(R.id.player_name);
 			holder.checkBox = (CheckBox) convertView
 					.findViewById(R.id.check_box);
+			holder.listener = new PlayerOnClickListener();
 
 			convertView.setTag(holder);
 		}
@@ -70,10 +71,12 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 		final Player player = (Player) getChild(groupPosition, childPosition);
 		holder.name.setText(player.getName());
 		holder.checkBox.setChecked(player.isChecked());
-		Log.i(tag, String.format("Create listener for(%d, %d) >> %s",
-				groupPosition, childPosition, player.isChecked()));
-		holder.checkBox.setOnClickListener(new PlayerCheckedChangeListener(
-				groupPosition, childPosition));
+
+		holder.listener.setChildPosition(childPosition);
+		holder.listener.setGroupPosition(groupPosition);
+
+		holder.checkBox.setOnClickListener(holder.listener);
+
 		// Log.i(tag, String.format("Selected for(%d, %d) %s", groupPosition,
 		// childPosition, player.isSelected()));
 		return convertView;
@@ -147,15 +150,27 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 	static class ChildHolder {
 		TextView name;
 		CheckBox checkBox;
+		PlayerOnClickListener listener;
 	}
 
-	private final class PlayerCheckedChangeListener implements OnClickListener {
+	private final class PlayerOnClickListener implements OnClickListener {
 
 		int groupPosition;
 		int childPosition;
 
-		PlayerCheckedChangeListener(int groupPosition, int childPosition) {
+		/**
+		 * 
+		 * @param groupPosition
+		 */
+		public void setGroupPosition(int groupPosition) {
 			this.groupPosition = groupPosition;
+		}
+
+		/**
+		 * 
+		 * @param childPosition
+		 */
+		public void setChildPosition(int childPosition) {
 			this.childPosition = childPosition;
 		}
 
@@ -165,9 +180,9 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 			Team team = mData.get(groupPosition);
 			Player player = team.getPlayers().get(childPosition);
 			CheckBox buttonView = (CheckBox) v;
-			
+
 			boolean isChecked = buttonView.isChecked();
-			
+
 			if (isChecked) {
 				team.increase();
 			} else {
@@ -177,7 +192,7 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 
 			Log.w(tag, String.format("Is checked %s %s %s >> %s, %d", team,
 					player, isChecked, team.getCount(), buttonView.getId()));
-			
+
 			notifyDataSetChanged();
 		}
 
