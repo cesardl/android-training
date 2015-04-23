@@ -30,10 +30,10 @@ public class Team {
 		return players;
 	}
 
-	public String getCount() {
-		return String.valueOf(count);
+	public int getCount() {
+		return count;
 	}
-
+	
 	public void increase() {
 		count++;
 	}

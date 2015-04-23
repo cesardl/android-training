@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.scytl.stackoverflow.model.Player;
 import com.scytl.stackoverflow.model.Team;
@@ -23,21 +26,34 @@ import com.scytl.stackoverflow.model.Team;
  */
 public class MainActivity extends Activity {
 
-	static final String tag = MainActivity.class.getSimpleName();
+	private static final String tag = MainActivity.class.getSimpleName();
+
+	private TextView vCount;
+
+	private TeamAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		vCount = (TextView) findViewById(R.id.count);
+
 		// get the listview
 		ExpandableListView expListView = (ExpandableListView) findViewById(R.id.exp_list);
 
 		// preparing list data
-		TeamAdapter adapter = new TeamAdapter(this, loadData());
+		mAdapter = new TeamAdapter(this, loadData());
+		mAdapter.registerDataSetObserver(observer);
 
 		// setting list adapter
-		expListView.setAdapter(adapter);
+		expListView.setAdapter(mAdapter);
+	}
+
+	@Override
+	protected void onDestroy() {
+		mAdapter.unregisterDataSetObserver(observer);
+		super.onDestroy();
 	}
 
 	private List<Team> loadData() {
@@ -53,6 +69,22 @@ public class MainActivity extends Activity {
 		data.add(new Team("Team C", new Player("Player C1"), new Player(
 				"Player C2"), new Player("Player C3")));
 
+		data.add(new Team("Team D", new Player("Player D1"), new Player(
+				"Player D2"), new Player("Player D3"), new Player("Player D4"),
+				new Player("Player D5"), new Player("Player D6")));
+
 		return data;
 	}
+
+	private DataSetObserver observer = new DataSetObserver() {
+		@Override
+		public void onChanged() {
+			String count = mAdapter.getTotalSelected();
+			Log.i(tag, String.format("Updating total: %s", count));
+
+			vCount.setText(count);
+			super.onChanged();
+		}
+	};
+
 }

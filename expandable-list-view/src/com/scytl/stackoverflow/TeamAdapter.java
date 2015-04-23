@@ -25,7 +25,7 @@ import com.scytl.stackoverflow.model.Team;
  */
 public class TeamAdapter extends BaseExpandableListAdapter {
 
-	static final String tag = TeamAdapter.class.getSimpleName();
+	private static final String tag = TeamAdapter.class.getSimpleName();
 
 	private Context mContext;
 	private List<Team> mData;
@@ -33,6 +33,18 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 	public TeamAdapter(Context context, List<Team> data) {
 		mContext = context;
 		mData = data;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getTotalSelected() {
+		int count = 0;
+		for (Team team : mData) {
+			count += team.getCount();
+		}
+		return String.valueOf(count);
 	}
 
 	@Override
@@ -124,7 +136,7 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 
 		final Team team = (Team) getGroup(groupPosition);
 		holder.name.setText(team.getName());
-		holder.count.setText(team.getCount());
+		holder.count.setText(String.valueOf(team.getCount()));
 		// Log.i(tag, String.format("Get count %s", team.getCount()));
 		return convertView;
 	}
@@ -176,9 +188,9 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			Team team = mData.get(groupPosition);
 			Player player = team.getPlayers().get(childPosition);
+
 			CheckBox buttonView = (CheckBox) v;
 
 			boolean isChecked = buttonView.isChecked();
@@ -190,8 +202,8 @@ public class TeamAdapter extends BaseExpandableListAdapter {
 			}
 			player.setChecked(isChecked);
 
-			Log.w(tag, String.format("Is checked %s %s %s >> %s, %d", team,
-					player, isChecked, team.getCount(), buttonView.getId()));
+			Log.i(tag, String.format("Is checked %s %s %s >> %s", team, player,
+					isChecked, team.getCount()));
 
 			notifyDataSetChanged();
 		}
