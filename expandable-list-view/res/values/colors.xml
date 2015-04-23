@@ -2,6 +2,7 @@
 <resources>
     
     <color name="master_count">#FA8765</color>
-    <color name="group_label">#F1FBF2</color>
+    <color name="group_label">#9999FF</color>
+    <color name="child_label">#F1FBF2</color>
     
 </resources>

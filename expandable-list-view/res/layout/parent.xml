@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#9999ff"
+    android:background="@color/group_label"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="10dp" >
 
     <TextView
         android:id="@+id/team_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_weight="1"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textStyle="bold" />
@@ -21,9 +20,7 @@
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:text="@string/zero"
         android:textStyle="bold" />
 
-</RelativeLayout>
+</LinearLayout>
