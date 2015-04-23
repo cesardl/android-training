@@ -5,21 +5,25 @@
     android:background="#9999ff"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="10dp" 
-    android:contentDescription="ROW_PARENT">
+    android:padding="10dp" >
 
     <TextView
-        android:id="@+id/tViewTeamName"
+        android:id="@+id/team_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:text="Team Name" />
+        android:layout_alignParentStart="true"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tViewNoOfSelectionFrmPatent"
+        android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="0" />
+        android:text="@string/zero"
+        android:textStyle="bold" />
 
 </RelativeLayout>
