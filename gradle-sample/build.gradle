@@ -1,0 +1,21 @@
+task hello {
+    doLast {
+        println 'Hello world!'
+    }
+}
+task intro(dependsOn: hello) << {
+	println "I'm Gradle"
+}
+task upper << {
+    String someString = 'mY_nAmE'
+    println "Original: " + someString 
+    println "Upper case: " + someString.toUpperCase()
+}
+task lower << {
+	String someString = 'yOur_nAmE'
+    println "Original: " + someString 
+	println "Lower case: "+ someString.toLowerCase()
+}
+task count << {
+    4.times { print "$it " }
+}
