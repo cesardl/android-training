@@ -32,6 +32,17 @@ public class MainActivity extends Activity {
 
 	private TeamAdapter mAdapter;
 
+	private DataSetObserver mObserver = new DataSetObserver() {
+		@Override
+		public void onChanged() {
+			String count = mAdapter.getTotalSelected();
+			Log.i(tag, String.format("Updating total: %s", count));
+
+			vCount.setText(count);
+			super.onChanged();
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,7 +55,7 @@ public class MainActivity extends Activity {
 
 		// preparing list data
 		mAdapter = new TeamAdapter(this, loadData());
-		mAdapter.registerDataSetObserver(observer);
+		mAdapter.registerDataSetObserver(mObserver);
 
 		// setting list adapter
 		expListView.setAdapter(mAdapter);
@@ -52,12 +63,12 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		mAdapter.unregisterDataSetObserver(observer);
+		mAdapter.unregisterDataSetObserver(mObserver);
 		super.onDestroy();
 	}
 
 	private List<Team> loadData() {
-		List<Team> data = new ArrayList<>();
+		List<Team> data = new ArrayList<Team>();
 
 		data.add(new Team("Team A", new Player("Player A1"), new Player(
 				"Player A2"), new Player("Player A3"), new Player("Player A4"),
@@ -75,16 +86,5 @@ public class MainActivity extends Activity {
 
 		return data;
 	}
-
-	private DataSetObserver observer = new DataSetObserver() {
-		@Override
-		public void onChanged() {
-			String count = mAdapter.getTotalSelected();
-			Log.i(tag, String.format("Updating total: %s", count));
-
-			vCount.setText(count);
-			super.onChanged();
-		}
-	};
 
 }

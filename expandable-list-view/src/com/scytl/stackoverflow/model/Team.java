@@ -16,7 +16,7 @@ public class Team {
 
 	public Team(String name, Player... players) {
 		this.name = name;
-		this.players = new ArrayList<>();
+		this.players = new ArrayList<Player>();
 		for (int i = 0; i < players.length; i++) {
 			this.players.add(players[i]);
 		}
