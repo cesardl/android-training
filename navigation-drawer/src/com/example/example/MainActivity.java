@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -118,6 +119,8 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+			TextView label = (TextView) rootView.findViewById(R.id.section_label);
+			label.setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
 			return rootView;
 		}
 
