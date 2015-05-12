@@ -8,11 +8,10 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -70,11 +69,12 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		System.out.println("MainActivity.onCreateOptionsMenu() " + mNavigationDrawerFragment.isDrawerOpen());
 		if (!mNavigationDrawerFragment.isDrawerOpen()) {
 			// Only show items in the action bar relevant to this screen
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
-			// getMenuInflater().inflate(R.menu.main, menu);
+			// getMenuInflater().inflate(R.menu.actions_1, menu);
 			restoreActionBar();
 			return true;
 		}
@@ -114,10 +114,41 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 		}
 
 		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState);
+			setHasOptionsMenu(true);
+		}
+
+		@Override
 		public void onAttach(Activity activity) {
 			super.onAttach(activity);
 			((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
 		}
+
+		@Override
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+			NavigationDrawerFragment f = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
+			if (!f.isDrawerOpen()) {
+				int number = getArguments().getInt(ARG_SECTION_NUMBER);
+				switch (number) {
+				case 1:
+					inflater.inflate(R.menu.actions_1, menu);
+					break;
+
+				case 2:
+					inflater.inflate(R.menu.actions_2, menu);
+					break;
+
+				case 3:
+					inflater.inflate(R.menu.actions_3, menu);
+					break;
+				}
+
+				((MainActivity) getActivity()).restoreActionBar();
+			}
+			super.onCreateOptionsMenu(menu, inflater);
+		}
+
 	}
 
 }
