@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="select_image_options">
+        <item>@string/from_camera</item>
+        <item>@string/from_gallery</item>
+    </string-array>
+
+</resources>

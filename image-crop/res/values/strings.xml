@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Image Crop</string>
+    <string name="how_to">How to select and crop image</string>
+    <string name="select_image">Select image</string>
+    <string name="choose_crop_app">Choose Crop App</string>
+
+    <!-- Select image options -->
+    <string name="from_camera">Take from camera</string>
+    <string name="from_gallery">Select from gallery</string>
+
+    <!-- Error messages -->
+    <string name="error_find_crop_app">Can\&#39;t find image crop app</string>
+
+</resources>
