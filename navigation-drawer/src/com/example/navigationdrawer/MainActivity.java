@@ -81,24 +81,6 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		switch (item.getItemId()) {
-		case R.id.action_example:
-			Toast.makeText(this, "Example action.", Toast.LENGTH_SHORT).show();
-			break;
-
-		case R.id.action_settings:
-			Toast.makeText(this, "Settings action.", Toast.LENGTH_SHORT).show();
-			break;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
