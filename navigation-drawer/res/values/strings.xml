@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Nav. Drawer</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Section 1 -->
+    <string name="action_add">Add action</string>
+    <string name="action_edit">Edit action</string>
+
+    <!-- Section 2 -->
+    <string name="action_directions">Directions action</string>
+    <string name="action_info_details">Info details action</string>
+
+    <!-- Section 3 -->
+    <string name="action_save">Save action</string>
+    <string name="action_revert">Revert action</string>
+
+</resources>
